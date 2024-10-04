@@ -1,0 +1,47 @@
+{
+  "name": "hotel-room-booking-case",
+  "version": "1.0.0",
+  "private": false,
+  "description": "A simple hotel room booking API",
+  "author": "@periakteon",
+  "main": "src/app.ts",
+  "scripts": {
+    "build": "tsc",
+    "ts-check": "tsc --noEmit",
+    "clean": "rm -rf build coverage",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "lint": "eslint . --ext .ts",
+    "start": "node build/app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@typegoose/typegoose": "^12.8.0",
+    "argon2": "^0.41.1",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0",
+    "nanoid": "^5.0.7",
+    "pino": "^9.4.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.13",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.4",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "pino-pretty": "^11.2.2",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2"
+  },
+  "license": "MIT"
+}
