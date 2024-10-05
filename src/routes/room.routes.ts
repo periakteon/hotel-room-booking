@@ -35,7 +35,7 @@ router.get(
   getRoomDetailByGivenIdHandler
 );
 
-router.post(
+router.patch(
   "/api/v1/room/edit/:id",
   deserializeUser,
   assertAdmin,
