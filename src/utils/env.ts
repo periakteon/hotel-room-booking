@@ -8,6 +8,8 @@ const zodEnv = z.object({
   REFRESH_TOKEN_SECRET: z.string(),
   ACCESS_TOKEN_PUBLIC_KEY: z.string(),
   REFRESH_TOKEN_PUBLIC_KEY: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.string(),
 });
 
 declare global {

@@ -12,7 +12,7 @@ import argon2 from "argon2";
 import log from "../utils/logger";
 import { Room } from "./room.model";
 
-enum UserRole {
+export enum UserRole {
   CUSTOMER = "customer",
   ADMIN = "admin",
 }
