@@ -14,6 +14,7 @@ async function connectToDb() {
     if (e instanceof MongooseError) {
       log.error(`Error connecting to DB: ${e.message}`);
     }
+
     process.exit(1);
   }
 }

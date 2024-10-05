@@ -14,6 +14,7 @@ import {
 import isMongoError from "../utils/mongoError";
 import { omit } from "lodash";
 import { isValidObjectId } from "mongoose";
+import log from "../utils/logger";
 
 export async function createRoomHandler(
   req: Request<object, object, CreateRoomInput>,
@@ -25,14 +26,17 @@ export async function createRoomHandler(
     return res.send({ success: true, data: omit(room.toJSON(), ["__v"]) });
   } catch (e: unknown) {
     if (isMongoError(e) && e.code === 11000) {
+      log.error(e, "Room already exists");
       return res
         .status(400)
         .send({ success: false, message: "Room already exists" });
     }
     if (e instanceof Error) {
+      log.error(e, "Error occurred while creating room");
       return res.status(400).send({ success: false, message: e.message });
     }
 
+    log.error(e, "Internal Server Error");
     return res
       .send(500)
       .send({ success: false, message: "Internal Server Error" });

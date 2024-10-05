@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { getEnvVar } from "./env";
+import log from "./logger";
 
 export function signJwt(
   object: object,
@@ -26,7 +27,7 @@ export function verifyJwt<T>(
     return decoded;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
-    console.error("🚀 ~ e", e);
+    log.error(e, "Error verifying JWT");
     return null;
   }
 }

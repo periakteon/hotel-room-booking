@@ -59,6 +59,7 @@ const generateRooms = (numRooms: number) => {
 const seedRooms = async () => {
   connectToDb().catch((error) => {
     log.error(error, "Error connecting to DB");
+
     process.exit(1);
   });
 
@@ -68,7 +69,9 @@ const seedRooms = async () => {
     for await (const room of rooms) {
       await createRoom(room);
     }
+
     log.info("DB seed completed successfully");
+
     process.exit(1);
   } catch (error) {
     log.error(error, "Error seeding DB");
