@@ -16,4 +16,6 @@ router.post(
 
 router.post("/api/v1/user/session/refresh", refreshAccessTokenHandler);
 
+// TODO: Logout route
+
 export default router;
