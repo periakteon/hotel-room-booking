@@ -23,7 +23,6 @@ export function verifyJwt<T>(
 
   try {
     const decoded = jwt.verify(token, key) as T;
-    console.log("🚀 ~ decoded:", decoded);
     return decoded;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {

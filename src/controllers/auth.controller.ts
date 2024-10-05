@@ -31,6 +31,18 @@ export async function createSessionHandler(
 
   const { refreshToken, sessionId } = await signRefreshToken({ user });
 
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: 15 * 60 * 1000,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    maxAge: 365 * 24 * 60 * 60 * 1000,
+  });
+
   res.header("Authorization", `Bearer ${accessToken}`);
   return res.send({
     accessToken,
