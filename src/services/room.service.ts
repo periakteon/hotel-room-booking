@@ -8,6 +8,12 @@ export function findRoomById(id: string) {
   return RoomModel.findById(id);
 }
 
+export function findRoomsByGivenDate(date: string) {
+  return RoomModel.find({
+    availableDates: date,
+  });
+}
+
 export function findRoomByRoomNumber(roomNumber: number) {
   return RoomModel.findOne({
     roomNumber,

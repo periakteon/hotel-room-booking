@@ -16,3 +16,13 @@ export const createRoomSchema = z.object({
 });
 
 export type CreateRoomInput = z.infer<typeof createRoomSchema>["body"];
+
+export const findRoomByGivenDateSchema = z.object({
+  query: z.object({
+    givenDate: z.string(),
+  }),
+});
+
+export type FindRoomByDatesInput = z.infer<
+  typeof findRoomByGivenDateSchema
+>["query"];
