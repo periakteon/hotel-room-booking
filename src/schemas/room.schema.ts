@@ -26,3 +26,13 @@ export const findRoomByGivenDateSchema = z.object({
 export type FindRoomByDatesInput = z.infer<
   typeof findRoomByGivenDateSchema
 >["query"];
+
+export const findRoomByGivenIdSchema = z.object({
+  params: z.object({
+    id: z.string(),
+  }),
+});
+
+export type FindRoomByIdInput = z.infer<
+  typeof findRoomByGivenIdSchema
+>["params"];

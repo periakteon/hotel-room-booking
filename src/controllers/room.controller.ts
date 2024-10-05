@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
-import { CreateRoomInput, FindRoomByDatesInput } from "../schemas/room.schema";
-import { createRoom, findRoomsByGivenDate } from "../services/room.service";
+import {
+  CreateRoomInput,
+  FindRoomByDatesInput,
+  FindRoomByIdInput,
+} from "../schemas/room.schema";
+import {
+  createRoom,
+  findRoomById,
+  findRoomsByGivenDate,
+} from "../services/room.service";
 import isMongoError from "../utils/mongoError";
 import { omit } from "lodash";
 
@@ -42,6 +50,33 @@ export async function getRoomsByGivenDateHandler(
     );
 
     return res.send({ success: true, data: filteredRooms });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return res.status(400).send({ success: false, message: e.message });
+    }
+
+    return res
+      .send(500)
+      .send({ success: false, message: "Internal Server Error" });
+  }
+}
+
+export async function getRoomDetailByGivenIdHandler(
+  req: Request<FindRoomByIdInput, object, object>,
+  res: Response
+) {
+  try {
+    const { id } = req.params;
+
+    const room = await findRoomById(id);
+
+    if (!room) {
+      return res
+        .status(404)
+        .send({ success: false, message: "Room not found" });
+    }
+
+    return res.send({ success: true, data: omit(room.toJSON(), ["__v"]) });
   } catch (e: unknown) {
     if (e instanceof Error) {
       return res.status(400).send({ success: false, message: e.message });
