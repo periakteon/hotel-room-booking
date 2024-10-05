@@ -1,10 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyJwt } from "../utils/jwt";
-const deserializeUser = async (
+import { User } from "../models/user.model";
+
+export interface IUser extends User {
+  _id: string;
+}
+
+export interface ResponseLocals<T> extends Response {
+  locals: {
+    user?: T;
+  };
+}
+
+async function deserializeUser(
   req: Request,
-  res: Response,
+  res: ResponseLocals<IUser>,
   next: NextFunction
-) => {
+) {
   const accessToken = (req.headers.authorization ?? "").replace(
     /^Bearer\s/,
     ""
@@ -14,13 +26,13 @@ const deserializeUser = async (
     return next();
   }
 
-  const decoded = verifyJwt(accessToken, "accessTokenPrivateKey");
+  const decoded = verifyJwt<IUser>(accessToken, "accessTokenPrivateKey");
 
   if (decoded) {
     res.locals.user = decoded;
   }
 
   return next();
-};
+}
 
 export default deserializeUser;
