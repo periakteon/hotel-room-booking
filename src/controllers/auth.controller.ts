@@ -55,7 +55,7 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
   const refreshToken = get(req, "headers.x-refresh");
 
   if (!refreshToken) {
-    return res.status(401).send("Could not refresh access token");
+    return res.status(401).send({ error: "Refresh token is required" });
   }
 
   const decoded = verifyJwt<{ session: string }>(
@@ -64,19 +64,19 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
   );
 
   if (!decoded) {
-    return res.status(401).send("Could not refresh access token");
+    return res.status(401).send({ error: "Invalid refresh token" });
   }
 
   const session = await findSessionById(decoded.session);
 
   if (!session || !session.valid) {
-    return res.status(401).send("Could not refresh access token");
+    return res.status(401).send({ error: "Session not found" });
   }
 
   const user = await findUserById(String(session.user));
 
   if (!user) {
-    return res.status(401).send("Could not refresh access token");
+    return res.status(401).send({ error: "User not found" });
   }
 
   const accessToken = signAccessToken(user);
