@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CreateRoomInput } from "../schemas/room.schema";
-import { createRoom } from "../services/room.service";
+import { CreateRoomInput, FindRoomByDatesInput } from "../schemas/room.schema";
+import { createRoom, findRoomsByGivenDate } from "../services/room.service";
 import isMongoError from "../utils/mongoError";
 import { omit } from "lodash";
 
@@ -18,6 +18,31 @@ export async function createRoomHandler(
         .status(400)
         .send({ success: false, message: "Room already exists" });
     }
+    if (e instanceof Error) {
+      return res.status(400).send({ success: false, message: e.message });
+    }
+
+    return res
+      .send(500)
+      .send({ success: false, message: "Internal Server Error" });
+  }
+}
+
+export async function getRoomsByGivenDateHandler(
+  req: Request<object, object, object, FindRoomByDatesInput>,
+  res: Response
+) {
+  try {
+    const { givenDate } = req.query;
+
+    const rooms = await findRoomsByGivenDate(givenDate);
+
+    const filteredRooms = rooms.map((room) =>
+      omit(room.toJSON(), ["createdAt", "updatedAt", "__v"])
+    );
+
+    return res.send({ success: true, data: filteredRooms });
+  } catch (e: unknown) {
     if (e instanceof Error) {
       return res.status(400).send({ success: false, message: e.message });
     }
