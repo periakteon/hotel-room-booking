@@ -19,3 +19,7 @@ export function findRoomByRoomNumber(roomNumber: number) {
     roomNumber,
   });
 }
+
+export function editRoomById(id: string, update: Partial<Room>) {
+  return RoomModel.findByIdAndUpdate(id, update, { new: true });
+}
