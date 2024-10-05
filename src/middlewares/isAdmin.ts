@@ -9,11 +9,13 @@ function assertAdmin(
   const user = res.locals.user;
 
   if (!user) {
-    return res.sendStatus(403);
+    return res.status(403).send({ error: "Unauthorized" });
   }
 
   if (user.role !== "admin") {
-    return res.sendStatus(403);
+    return res
+      .status(403)
+      .send({ error: "Only admins can edit this resource" });
   }
 
   return next();
