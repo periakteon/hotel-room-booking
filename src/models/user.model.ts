@@ -6,12 +6,17 @@ import {
   pre,
   DocumentType,
   index,
+  Ref,
 } from "@typegoose/typegoose";
 import argon2 from "argon2";
 import log from "../utils/logger";
+import { Room } from "./room.model";
 
-// pre hook to hash password before saving
-// why function instead of arrow function? https://typegoose.github.io/typegoose/docs/guides/quick-start-guide/#hooks
+enum UserRole {
+  CUSTOMER = "customer",
+  ADMIN = "admin",
+}
+
 @pre<User>("save", async function () {
   if (!this.isModified("password")) {
     return;
@@ -23,9 +28,7 @@ import log from "../utils/logger";
 
   return;
 })
-// Index email field for faster lookups
 @index({ email: 1 })
-// modelOptions decorator to set schema options
 @modelOptions({
   schemaOptions: {
     timestamps: true,
@@ -47,7 +50,11 @@ export class User {
   @prop({ required: true })
   password: string;
 
-  // TODO: ADD ROLES (customer | admin)
+  @prop({ enum: UserRole, default: UserRole.CUSTOMER })
+  role: UserRole;
+
+  @prop({ ref: () => Room })
+  bookings: Ref<Room>[];
 
   async validatePassword(this: DocumentType<User>, candidatePassword: string) {
     try {

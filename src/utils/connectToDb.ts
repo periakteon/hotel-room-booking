@@ -1,3 +1,4 @@
+import "dotenv/config";
 import mongoose, { MongooseError } from "mongoose";
 import log from "./logger";
 
@@ -5,7 +6,9 @@ async function connectToDb() {
   const dbUri = process.env.DATABASE_URL as string;
 
   try {
-    await mongoose.connect(dbUri);
+    await mongoose.connect(dbUri, {
+      serverSelectionTimeoutMS: 20000,
+    });
     log.info("Connected to DB");
   } catch (e) {
     if (e instanceof MongooseError) {

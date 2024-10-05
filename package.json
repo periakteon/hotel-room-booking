@@ -10,11 +10,13 @@
     "ts-check": "tsc --noEmit",
     "clean": "rm -rf build coverage",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "db:seed": "ts-node src/utils/db-seed.ts",
     "lint": "eslint . --ext .ts",
     "start": "node build/app.js",
     "test": "jest"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@typegoose/typegoose": "^12.8.0",
     "argon2": "^0.41.1",
     "dayjs": "^1.11.13",
