@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./utils/env";
 import express, { Application } from "express";
 import { Server, createServer } from "http";
 import helmet from "helmet";

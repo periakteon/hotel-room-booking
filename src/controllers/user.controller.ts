@@ -5,7 +5,7 @@ import { MongooseError } from "mongoose";
 import isMongoError from "../utils/mongoError";
 
 export async function createUserHandler(
-  req: Request<object, object, CreateUserInput["body"]>,
+  req: Request<object, object, CreateUserInput>,
   res: Response
 ) {
   try {
@@ -31,4 +31,8 @@ export async function createUserHandler(
       .status(500)
       .send({ success: false, message: "Internal Server Error" });
   }
+}
+
+export async function getCurrentUserHandler(_req: Request, res: Response) {
+  return res.send(res.locals.user);
 }
