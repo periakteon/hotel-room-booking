@@ -15,6 +15,8 @@ import isMongoError from "../utils/mongoError";
 import { omit } from "lodash";
 import { isValidObjectId } from "mongoose";
 import log from "../utils/logger";
+import { DocumentType } from "@typegoose/typegoose";
+import { Room } from "../models/room.model";
 
 export async function createRoomHandler(
   req: Request<object, object, CreateRoomInput>,
@@ -50,10 +52,10 @@ export async function getRoomsByGivenDateHandler(
   try {
     const { givenDate } = req.query;
 
-    const rooms = await findRoomsByGivenDate(givenDate);
+    const rooms: DocumentType<Room>[] = await findRoomsByGivenDate(givenDate);
 
-    const filteredRooms = rooms.map((room) =>
-      omit(room.toJSON(), ["createdAt", "updatedAt", "__v"])
+    const filteredRooms = rooms.map((room: DocumentType<Room>) =>
+      omit(room, ["createdAt", "updatedAt", "__v"])
     );
 
     return res.send({ success: true, data: filteredRooms });
@@ -89,7 +91,7 @@ export async function getRoomDetailByGivenIdHandler(
         .send({ success: false, message: "Room not found" });
     }
 
-    return res.send({ success: true, data: omit(room.toJSON(), ["__v"]) });
+    return res.send({ success: true, data: omit(room, ["__v"]) });
   } catch (e: unknown) {
     if (e instanceof Error) {
       return res.status(400).send({ success: false, message: e.message });

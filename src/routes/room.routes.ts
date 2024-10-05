@@ -19,6 +19,8 @@ const router = Router();
 
 router.post(
   "/api/v1/room/create",
+  deserializeUser,
+  assertAdmin,
   validateRequest(createRoomSchema),
   createRoomHandler
 );

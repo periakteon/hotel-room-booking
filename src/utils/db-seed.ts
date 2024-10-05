@@ -3,6 +3,8 @@ import { RoomType } from "../models/room.model";
 import { createRoom } from "../services/room.service";
 import connectToDb from "./connectToDb";
 import log from "./logger";
+import redisClient from "./redis";
+import { CACHE_EXPIRATION } from "./constants";
 
 const generateRandomDates = (numDates: number) => {
   const dates: string[] = [];
@@ -67,7 +69,14 @@ const seedRooms = async () => {
 
   try {
     for await (const room of rooms) {
-      await createRoom(room);
+      const createdRoom = await createRoom(room);
+
+      await redisClient.set(
+        `room:${createdRoom._id}`,
+        JSON.stringify(room),
+        "EX",
+        CACHE_EXPIRATION
+      );
     }
 
     log.info("DB seed completed successfully");
