@@ -24,6 +24,7 @@ import API from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -93,7 +94,7 @@ export default function Login() {
       return;
     }
 
-    queryClient.invalidateQueries();
+    queryClient.invalidateQueries({ queryKey: ["user"] });
     void router.push("/");
   }
 
@@ -137,6 +138,11 @@ export default function Login() {
             <Button type="submit" className="w-full">
               Login
             </Button>
+            <div className="text-center">
+              <Link href="/register" className="text-blue-500">
+                Register
+              </Link>
+            </div>
           </form>
         </Form>
       </CardContent>
