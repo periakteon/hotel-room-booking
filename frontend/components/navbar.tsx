@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { User as IUser } from "@/hooks/useUser";
 import API from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { Separator } from "./ui/separator";
 
 export default function Navbar() {
   const { user: userData, loading, isAuthenticated } = useAuth();
@@ -37,6 +38,16 @@ export default function Navbar() {
             <span className="sr-only">Elegant Trading</span>
           </Link>
           <div className="grid gap-2 py-6">
+            {loading && <Skeleton className="h-9 w-20" />}
+            {!loading && !isAuthenticated && (
+              <Link href="/login" className="h-9 w-20">
+                <Button>Log in</Button>
+              </Link>
+            )}
+            {!loading && isAuthenticated && userData && (
+              <UserNav user={userData} />
+            )}
+            <Separator />
             <Link
               href="/"
               className="flex w-full items-center py-2 text-lg font-semibold"
