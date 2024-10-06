@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -9,34 +10,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Component() {
+export default function Root() {
+  const navigate = useNavigate();
+
   const [date, setDate] = useState<Date>();
-  const [heroText, setHeroText] = useState("");
-
-  const fullText = "Find Your Perfect Stay";
-
-  useEffect(() => {
-    let index = 0;
-    let pause = false;
-
-    const intervalId = setInterval(() => {
-      if (!pause) {
-        setHeroText(fullText.slice(0, index));
-        index++;
-        if (index > fullText.length) {
-          pause = true;
-          setTimeout(() => {
-            index = 0;
-            pause = false;
-          }, 3000);
-        }
-      }
-    }, 200);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  const [backgroundAngle, setBackgroundAngle] = useState(0);
 
   const handleSearch = () => {
     const formattedDate = date ? format(date, "yyyy-MM-dd") : "";
@@ -44,25 +24,40 @@ export default function Component() {
     console.log("Search with:", {
       date: formattedDate,
     });
-    // TODO: API request
+
+    navigate(`/list?givenDate=${formattedDate}`);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBackgroundAngle((prev) => (prev + 1) % 360);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-300 via-slate-500 to-slate-700"></div>
+        <div
+          className="absolute inset-0 transition-colors duration-500 ease-in-out"
+          style={{
+            background: `linear-gradient(${backgroundAngle}deg, #64748b, #94a3b8, #e2e8f0)`,
+          }}
+        />
         <div className="absolute inset-0 opacity-50 mix-blend-soft-light"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black opacity-25"></div>
       </div>
       <div className="relative z-10 text-center mb-8">
-        <h1
-          className="text-4xl font-bold text-white mb-4 min-h-[48px]"
-          aria-live="polite"
+        <motion.h1
+          className="max-w-3xl bg-gradient-to-br from-white to-gray-300 bg-clip-text text-center text-3xl font-medium leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-7xl md:leading-tight"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          {heroText}
-        </h1>
+          Find Your Perfect Stay
+        </motion.h1>
       </div>
-      <div className="relative z-10 w-full max-w-md p-8 space-y-6 bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-lg animate-fade-in">
+      <div className="relative z-10 w-full max-w-md p-8 space-y-6 bg-white bg-opacity-70 backdrop-blur-md rounded-xl shadow-lg animate-fade-in">
         <div className="space-y-4">
           <div className="space-y-2">
             <label
