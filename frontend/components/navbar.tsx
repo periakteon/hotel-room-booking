@@ -1,9 +1,27 @@
+"use client";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { HotelIcon, MenuIcon } from "lucide-react";
+import { useAuth } from "@/providers/auth";
+import { Skeleton } from "./ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "./ui/avatar";
+import { User as IUser } from "@/hooks/useUser";
+import API from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
+  const { user: userData, loading, isAuthenticated } = useAuth();
+
   return (
     <header className="flex h-14 w-full shrink-0 items-center px-4 md:px-6 border-b-2 border-gray-100 dark:border-gray-800">
       <Sheet>
@@ -39,7 +57,53 @@ export default function Navbar() {
         >
           Home
         </Link>
+        {loading && <Skeleton className="h-9 w-20" />}
+        {!loading && !isAuthenticated && (
+          <Link href="/login" className="h-9 w-20">
+            <Button>Log in</Button>
+          </Link>
+        )}
+        {!loading && isAuthenticated && userData && <UserNav user={userData} />}
       </nav>
     </header>
+  );
+}
+
+function UserNav({ user }: { user: IUser }) {
+  const queryClient = useQueryClient();
+
+  async function handleLogout() {
+    await API.delete("/user/session");
+
+    queryClient.setQueryData(["user"], null);
+  }
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarFallback>
+              {`${user.firstName[0]}${user.lastName[0]}`}
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-2">
+            <p className="text-sm font-semibold leading-none">
+              {`${user.firstName} ${user.lastName}`}
+            </p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

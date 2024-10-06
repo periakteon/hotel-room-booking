@@ -23,6 +23,7 @@ import { z } from "zod";
 import API from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -46,6 +47,9 @@ type Login = {
 
 export default function Login() {
   const router = useRouter();
+
+  const queryClient = useQueryClient();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -89,9 +93,8 @@ export default function Login() {
       return;
     }
 
+    queryClient.invalidateQueries();
     void router.push("/");
-
-    console.log(data);
   }
 
   return (

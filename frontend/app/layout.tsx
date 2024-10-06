@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/components/navbar";
 import ReactQueryProvider from "@/providers/query-client";
+import AuthProvider from "@/providers/auth";
 
 export const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,9 +34,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReactQueryProvider>
-          <Navbar />
-          <Toaster closeButton />
-          {children}
+          <AuthProvider>
+            <Navbar />
+            <Toaster closeButton />
+            {children}
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>

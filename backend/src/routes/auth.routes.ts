@@ -8,14 +8,21 @@ import {
 
 const router = Router();
 
+// Login
 router.post(
   "/api/v1/user/session",
   validateRequest(createSessionSchema),
   createSessionHandler
 );
 
+// Refresh access token
 router.post("/api/v1/user/session/refresh", refreshAccessTokenHandler);
 
-// TODO: Logout route
+// Logout
+router.delete("/api/v1/user/session", (_req, res) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+  res.sendStatus(200);
+});
 
 export default router;
