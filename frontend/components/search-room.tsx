@@ -20,15 +20,11 @@ export default function SearchRoom() {
   const [date, setDate] = useState<Date>();
   const [backgroundAngle, setBackgroundAngle] = useState(0);
 
-  const handleSearch = () => {
+  function handleSearch() {
     const formattedDate = date ? format(date, "yyyy-MM-dd") : "";
 
-    console.log("Search with:", {
-      date: formattedDate,
-    });
-
     void router.push(`/list?givenDate=${formattedDate}`);
-  };
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {

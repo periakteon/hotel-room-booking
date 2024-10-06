@@ -1,8 +1,10 @@
 import { DocumentType } from "@typegoose/typegoose";
 import BookingModel, { Booking } from "../models/booking.model";
-import RoomModel from "../models/room.model";
+import RoomModel, { Room } from "../models/room.model";
 import log from "../utils/logger";
 import { isValidObjectId } from "mongoose";
+import redisClient from "../utils/redis";
+import { CACHE_EXPIRATION } from "../utils/constants";
 
 export async function createBooking(
   userId: string,
@@ -36,6 +38,32 @@ export async function createBooking(
     );
 
     await room.save();
+
+    await redisClient.set(
+      `room:${roomId}`,
+      JSON.stringify(room),
+      "EX",
+      CACHE_EXPIRATION
+    );
+
+    const cacheKey = `rooms:date:${date}`;
+    const cachedRooms = await redisClient.get(cacheKey);
+
+    if (cachedRooms) {
+      const rooms = JSON.parse(cachedRooms);
+      const updatedRooms = rooms.filter(
+        (cachedRoom: DocumentType<Room>) => cachedRoom._id.toString() !== roomId
+      );
+
+      await redisClient.set(
+        cacheKey,
+        JSON.stringify(updatedRooms),
+        "EX",
+        CACHE_EXPIRATION
+      );
+    }
+
+    log.info("Room cache updated successfully after booking");
 
     return booking;
   } catch (e: unknown) {
