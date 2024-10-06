@@ -1,15 +1,9 @@
-FROM node:20.17-slim AS builder
+FROM node:20
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+EXPOSE 8000
 
-FROM node:20.17-slim AS server
-WORKDIR /app
-ENV PORT $PORT
-COPY package* ./
-RUN npm install --production
-COPY --from=builder ./app/build ./build
-EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
