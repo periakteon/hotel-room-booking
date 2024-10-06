@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +21,7 @@ import {
 } from "@/components/ui/pagination";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 
 type Hotel = {
   name: string;
@@ -35,9 +37,10 @@ export default function ListRooms() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
 
   const date = searchParams.get("givenDate");
+  console.log("🚀 ~ ListRooms ~ date:", date);
 
   const roomsPerPage = 20;
 

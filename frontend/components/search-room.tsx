@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -10,10 +12,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
-export default function Root() {
-  const navigate = useNavigate();
+export default function SearchRoom() {
+  const router = useRouter();
 
   const [date, setDate] = useState<Date>();
   const [backgroundAngle, setBackgroundAngle] = useState(0);
@@ -25,7 +27,7 @@ export default function Root() {
       date: formattedDate,
     });
 
-    navigate(`/list?givenDate=${formattedDate}`);
+    void router.push(`/list?givenDate=${formattedDate}`);
   };
 
   useEffect(() => {
