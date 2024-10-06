@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: hotel-room-booking-app
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mongodb://mongo:27017/hotel-booking
+      - PORT=${PORT}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - APP_ORIGIN=${APP_ORIGIN}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - ACCESS_TOKEN_PUBLIC_KEY=${ACCESS_TOKEN_PUBLIC_KEY}
+      - REFRESH_TOKEN_PUBLIC_KEY=${REFRESH_TOKEN_PUBLIC_KEY}
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:
