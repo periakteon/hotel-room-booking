@@ -7,6 +7,7 @@ import requireUser from "../middlewares/requireUser";
 
 const router = Router();
 
+// Create booking by room ID
 router.post(
   "/api/v1/booking/create/:roomId",
   deserializeUser,

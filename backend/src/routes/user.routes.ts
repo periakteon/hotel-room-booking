@@ -11,18 +11,21 @@ import requireUser from "../middlewares/requireUser";
 
 const router = Router();
 
+// Register user
 router.post(
   "/api/v1/user/register",
   validateRequest(createUserSchema),
   createUserHandler
 );
 
+// Register admin
 router.post(
   "/api/v1/admin/register",
   validateRequest(createUserSchema),
   createAdminHandler
 );
 
+// Get current user
 router.get(
   "/api/v1/user/me",
   deserializeUser,

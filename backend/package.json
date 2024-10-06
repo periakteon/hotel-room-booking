@@ -19,6 +19,8 @@
     "@faker-js/faker": "^9.0.3",
     "@typegoose/typegoose": "^12.8.0",
     "argon2": "^0.41.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "express": "^5.0.0",
@@ -34,6 +36,8 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",

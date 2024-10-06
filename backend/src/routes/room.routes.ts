@@ -17,6 +17,7 @@ import assertAdmin from "../middlewares/isAdmin";
 
 const router = Router();
 
+// Create room
 router.post(
   "/api/v1/room/create",
   deserializeUser,
@@ -25,18 +26,21 @@ router.post(
   createRoomHandler
 );
 
+// Get rooms by given date
 router.get(
   "/api/v1/room/findByGivenDate",
   validateRequest(findRoomByGivenDateSchema),
   getRoomsByGivenDateHandler
 );
 
+// Get room by given ID
 router.get(
   "/api/v1/room/view/:id",
   validateRequest(findRoomByGivenIdSchema),
   getRoomDetailByGivenIdHandler
 );
 
+// Update room by ID
 router.patch(
   "/api/v1/room/edit/:id",
   deserializeUser,
