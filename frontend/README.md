@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hotel Room Reservation Application
 
-## Getting Started
+This is a hotel room reservation application built with Next.js. The application communicates with a hotel room reservation API, allowing users to browse available rooms, make reservations, and manage their bookings. 
 
-First, run the development server:
+## Video Demo (Click to Play)
+[![Watch the video](https://img.youtube.com/vi/grd3BIlPXHA/0.jpg)](https://www.youtube.com/watch?v=grd3BIlPXHA)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- User-friendly interface for searching and booking hotel rooms.
+- Responsive design using Tailwind CSS.
+- Form handling with React Hook Form and Zod for validation.
+- Client-side data fetching using React Query (TanStack Query) for caching and updating data.
+- Animations using Framer Motion.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend:**
+- - [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript.
+  - [Next.js](https://nextjs.org/) - A React framework for server-rendered applications.
+  - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
+  - [Shadcn UI](https://ui.shadcn.com/) - A component library for building accessible UI components.
+  - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for styling.
+  - [Axios](https://axios-http.com/) - A promise-based HTTP client for making API requests.
+  - [React Query](https://tanstack.com/query/latest) - A library for fetching, caching, and updating data in React applications.
+  - [Zod](https://zod.dev/) - A TypeScript-first schema declaration and validation library.
+  - [Framer Motion](https://www.framer.com/motion/) - A library for creating animations in React.
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+### Docker
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/periakteon/hotel-room-booking.git
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Run docker-compose up:
+   ```bash
+   docker-compose up --build
+   ```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
