@@ -17,16 +17,19 @@ async function deserializeUser(
   res: ResponseLocals<IUser>,
   next: NextFunction
 ) {
-  const accessToken = (req.headers.authorization ?? "").replace(
-    /^Bearer\s/,
-    ""
-  );
+  const getToken = (): string | null => {
+    const authHeaderToken = req.headers.authorization?.replace(/^Bearer\s/, "");
+    const cookieToken = req.cookies["accessToken"];
+    return (authHeaderToken || cookieToken) ?? null;
+  };
 
-  if (!accessToken) {
+  const token = getToken();
+
+  if (!token) {
     return next();
   }
 
-  const decoded = verifyJwt<IUser>(accessToken, "accessTokenPrivateKey");
+  const decoded = verifyJwt<IUser>(token, "accessTokenPrivateKey");
 
   if (decoded) {
     res.locals.user = decoded;

@@ -73,5 +73,6 @@ export async function createAdminHandler(
 }
 
 export async function getCurrentUserHandler(_req: Request, res: Response) {
+  // TODO: Return the current user using DB to ensure the user is up-to-date
   return res.send(res.locals.user);
 }

@@ -10,6 +10,7 @@ const zodEnv = z.object({
   REFRESH_TOKEN_PUBLIC_KEY: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PORT: z.string(),
+  APP_ORIGIN: z.string(),
 });
 
 declare global {
@@ -34,17 +35,25 @@ try {
 }
 
 type EnvKeys =
+  | "DATABASE_URL"
   | "accessTokenPrivateKey"
   | "refreshTokenPrivateKey"
   | "accessTokenPublicKey"
-  | "refreshTokenPublicKey";
+  | "refreshTokenPublicKey"
+  | "REDIS_HOST"
+  | "REDIS_PORT"
+  | "APP_ORIGIN";
 
 export function getEnvVar(key: EnvKeys): string {
   const envVars: Record<EnvKeys, string> = {
+    DATABASE_URL: process.env.DATABASE_URL!,
     accessTokenPrivateKey: process.env.ACCESS_TOKEN_SECRET!,
     refreshTokenPrivateKey: process.env.REFRESH_TOKEN_SECRET!,
     accessTokenPublicKey: process.env.ACCESS_TOKEN_PUBLIC_KEY!,
     refreshTokenPublicKey: process.env.REFRESH_TOKEN_PUBLIC_KEY!,
+    REDIS_HOST: process.env.REDIS_HOST!,
+    REDIS_PORT: process.env.REDIS_PORT!,
+    APP_ORIGIN: process.env.APP_ORIGIN!,
   };
 
   return envVars[key] ?? "";
